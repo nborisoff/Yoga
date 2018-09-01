@@ -1,7 +1,7 @@
 "use strict";
 
 function timer() {
-  var deadline = 'September 09 2018 12:00:00 GMT+03:00';
+  var deadline = '2018-09-09';
 
   if (Date.parse(deadline) - Date.parse(new Date()) >= 0) {
     function getTimeRemaining(endtime) {
