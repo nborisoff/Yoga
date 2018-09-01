@@ -7889,404 +7889,425 @@ window.addEventListener('DOMContentLoaded', function() {
 
 /***/ }),
 /* 279 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function tab() {
-	let tab = document.getElementsByClassName('info-header-tab'),
-		tabContent = document.getElementsByClassName('info-tabcontent'),
-		info = document.getElementsByClassName('info-header')[0];
+  var tab = document.getElementsByClassName('info-header-tab'),
+      tabContent = document.getElementsByClassName('info-tabcontent'),
+      info = document.getElementsByClassName('info-header')[0];
 
-	function hideTabContent(a) {
-		for (let i = a; i < tabContent.length; i++) {
-			tabContent[i].classList.remove('show');
-			tabContent[i].classList.add('hide');
-		}
-	}
+  function hideTabContent(a) {
+    for (var i = a; i < tabContent.length; i++) {
+      tabContent[i].classList.remove('show');
+      tabContent[i].classList.add('hide');
+    }
+  }
 
-	hideTabContent(1);
+  hideTabContent(1);
 
-	function showTabContent(b) {
-		if (tabContent[b].classList.contains('hide')) {
-			hideTabContent(0);
-			tabContent[b].classList.remove('hide');
-			tabContent[b].classList.add('show');
-		}
-	}
+  function showTabContent(b) {
+    if (tabContent[b].classList.contains('hide')) {
+      hideTabContent(0);
+      tabContent[b].classList.remove('hide');
+      tabContent[b].classList.add('show');
+    }
+  }
 
-	info.addEventListener('click', function(event) {
-		let target = event.target;
-		if (target.className == 'info-header-tab') {
-			for (let i = 0; 1 < tab.length; i++) {
-				if (target == tab[i]) {
-					showTabContent(i);
-					break;
-				}
-			}
-		}
-	});
+  info.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.className == 'info-header-tab') {
+      for (var i = 0; 1 < tab.length; i++) {
+        if (target == tab[i]) {
+          showTabContent(i);
+          break;
+        }
+      }
+    }
+  });
 }
 
 module.exports = tab;
 
 /***/ }),
 /* 280 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function modal() {
-	let more = document.querySelector('.more'),
-		overlay = document.querySelector('.overlay'),
-		close = document.querySelector('.popup-close');
+  var more = document.querySelector('.more'),
+      overlay = document.querySelector('.overlay'),
+      close = document.querySelector('.popup-close');
+  more.addEventListener('click', function () {
+    this.classList.add('more-splash');
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  });
+  close.addEventListener('click', function () {
+    overlay.style.display = 'none';
+    more.classList.remove('more-splash');
+    document.body.style.overflow = '';
+  });
+  var description = document.querySelectorAll('.description-btn');
 
-	more.addEventListener('click', function() {
-		this.classList.add('more-splash');
-		overlay.style.display = 'block';
-		document.body.style.overflow = 'hidden';
-	});
-
-	close.addEventListener('click', () => {
-		overlay.style.display = 'none';
-		more.classList.remove('more-splash');
-		document.body.style.overflow = '';
-	});
-
-	let description = document.querySelectorAll('.description-btn');
-
-	for (let i = 0; i < description.length; i++) {
-		description[i].addEventListener('click', () => {
-			overlay.style.display = 'block';
-			document.body.style.overflow = 'hidden';
-		});
-	}
+  for (var i = 0; i < description.length; i++) {
+    description[i].addEventListener('click', function () {
+      overlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    });
+  }
 }
 
 module.exports = modal;
 
 /***/ }),
 /* 281 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(203);
 
 function scroll() {
+  var menu = document.querySelectorAll('[href^="#"]'),
+      speed = 0.3;
 
-	let menu = document.querySelectorAll('[href^="#"]'),
-    	speed = 0.3;  
+  for (var i = 0; i < menu.length; i++) {
+    menu[i].addEventListener('click', function (event) {
+      event.preventDefault();
+      var currentScroll = window.pageYOffset,
+          //текущая прокрутка
+      elem = this.href.replace(/[^#]*(.*)/, '$1'),
+          //элемент, к которому переходим
+      windowCoordinates = document.querySelector(elem).getBoundingClientRect().top,
+          //координаты элемента относительно окна
+      start = null;
 
-	for (let i = 0; i < menu.length; i++) {
-	    menu[i].addEventListener('click', function(event) {
-	        event.preventDefault();
-	        let currentScroll = window.pageYOffset, //текущая прокрутка
-	            elem = this.href.replace(/[^#]*(.*)/, '$1'), //элемент, к которому переходим
-	            windowCoordinates = document.querySelector(elem).getBoundingClientRect().top, //координаты элемента относительно окна
-	        	start = null;
-	        
-	        function scroll(time) {
-	            if (start == null) {
-	            	start = time;
-	            }
+      function scroll(time) {
+        if (start == null) {
+          start = time;
+        }
 
-	            let progress = time - start,
-	            	y;
+        var progress = time - start,
+            y;
 
-	            if (windowCoordinates < 0) {
-	            	y = Math.max(currentScroll - progress/speed, currentScroll + windowCoordinates);
-	            }else {
-	               	y = Math.min(currentScroll + progress/speed, currentScroll + windowCoordinates);
-	            }
+        if (windowCoordinates < 0) {
+          y = Math.max(currentScroll - progress / speed, currentScroll + windowCoordinates);
+        } else {
+          y = Math.min(currentScroll + progress / speed, currentScroll + windowCoordinates);
+        }
 
-	            window.scrollTo(0,y);
+        window.scrollTo(0, y);
 
-	            if (y != currentScroll + windowCoordinates) {
-	                requestAnimationFrame(scroll);
-	            } else {
-	                location.elem = elem;
-	            }
-	        }
+        if (y != currentScroll + windowCoordinates) {
+          requestAnimationFrame(scroll);
+        } else {
+          location.elem = elem;
+        }
+      }
 
-	        requestAnimationFrame(scroll);
-	    });
-	}
+      requestAnimationFrame(scroll);
+    });
+  }
 }
 
 module.exports = scroll;
 
 /***/ }),
 /* 282 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function ajax() {
-	let message = new Object();
-	message.loading = 'Загрузка...';
-	message.success = 'Спасибо! Скоро мы с вами свяжемся';
-	message.failure = 'Что-то пошло не так...';
+  var message = new Object();
+  message.loading = 'Загрузка...';
+  message.success = 'Спасибо! Скоро мы с вами свяжемся';
+  message.failure = 'Что-то пошло не так...';
+  var mainForm = document.getElementsByClassName('main-form')[0],
+      form = document.getElementById('form'),
+      input = document.getElementsByTagName('input'),
+      img = document.createElement('img'),
+      statusMessage = document.createElement('div');
+  statusMessage.classList.add('status');
+  img.style.padding = '0px 0px 0px 30px';
+  mainForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    mainForm.appendChild(statusMessage); //AJAX
 
-	let mainForm = document.getElementsByClassName('main-form')[0],
-		form = document.getElementById('form'),
-		input = document.getElementsByTagName('input'),
-		img = document.createElement('img'),
-		statusMessage = document.createElement('div');
-	statusMessage.classList.add('status');
-img.style.padding = '0px 0px 0px 30px';
+    var request = new XMLHttpRequest();
+    request.open('POST', 'server.php');
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    var formData = new FormData(mainForm);
+    request.send(formData);
 
-	mainForm.addEventListener('submit', function(event) {
-		event.preventDefault();
-		mainForm.appendChild(statusMessage);
+    request.onreadystatechange = function () {
+      if (request.readyState < 4) {
+        statusMessage.innerHTML = message.loading;
+      } else if (request.readyState === 4) {
+        if (request.status == 200 && request.status < 300) {
+          statusMessage.innerHTML = message.success; //Добавляем контент на страницу
+        } else {
+          statusMessage.innerHTML = message.failure;
+        }
+      }
+    };
 
-		//AJAX
-		let request = new XMLHttpRequest();
-		request.open('POST', 'server.php');
-		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    for (var i = 0; i < input.length; i++) {
+      input[i].value = '';
+    }
+  });
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var request = new XMLHttpRequest();
+    request.open('POST', 'server.php');
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    var formData = new FormData(form);
+    request.send(formData);
 
-		let formData = new FormData(mainForm);
-		request.send(formData);
+    request.onreadystatechange = function () {
+      if (request.readyState < 4) {
+        img.src = 'img/loading.gif';
+        form.appendChild(img);
+      } else if (request.readyState === 4) {
+        if (request.status == 200 && request.status < 300) {
+          img.src = 'img/approval.png';
+          form.appendChild(img);
+        } else {
+          img.src = 'img/failure.png';
+          form.appendChild(img);
+        }
+      }
+    };
 
-		request.onreadystatechange = function() {
-			if (request.readyState < 4) {
-				statusMessage.innerHTML = message.loading;
-			} else if (request.readyState === 4) {
-				if (request.status == 200 && request.status < 300) {
-					statusMessage.innerHTML = message.success;
-					//Добавляем контент на страницу
-				} else {
-					statusMessage.innerHTML = message.failure;
-				}
-			}
-		}
-
-		for (let i = 0; i < input.length; i++) {
-			input[i].value = ''; 
-		}
-	});
-
-	form.addEventListener('submit', function(event) {
-		event.preventDefault();
-
-		let request = new XMLHttpRequest();
-		request.open('POST', 'server.php');
-		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-		let formData = new FormData(form);
-		request.send(formData);
-
-		request.onreadystatechange = function() {
-			if (request.readyState < 4) {
-				img.src = 'img/loading.gif';
-				form.appendChild(img);
-			} else if (request.readyState === 4) {
-				if (request.status == 200 && request.status < 300) {
-					img.src = 'img/approval.png';
-					form.appendChild(img);
-				} else {
-					img.src = 'img/failure.png';
-					form.appendChild(img);
-				}
-			}
-		}
-
-		for (let i = 0; i < input.length; i++) {
-			input[i].value = ''; 
-		}
-	});
+    for (var i = 0; i < input.length; i++) {
+      input[i].value = '';
+    }
+  });
 }
 
 module.exports = ajax;
 
 /***/ }),
 /* 283 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function slider() {
-	let slideIndex = 1,
-		slides = document.getElementsByClassName('slider-item'),
-		prev = document.querySelector('.prev'),
-		next = document.querySelector('.next'),
-		dotsWrap = document.querySelector('.slider-dots'),
-		dots = document.getElementsByClassName('dot'),
-		slideItem = document.querySelectorAll('.slider-item img');
+  var slideIndex = 1,
+      slides = document.getElementsByClassName('slider-item'),
+      prev = document.querySelector('.prev'),
+      next = document.querySelector('.next'),
+      dotsWrap = document.querySelector('.slider-dots'),
+      dots = document.getElementsByClassName('dot'),
+      slideItem = document.querySelectorAll('.slider-item img');
+  showSlides(slideIndex);
 
-	showSlides(slideIndex);
+  function showSlides(n) {
+    if (n > slides.length) {
+      slideIndex = 1;
+    }
 
-	function showSlides(n) {
-		if (n > slides.length) {
-			slideIndex = 1;
-		}
+    if (n < 1) {
+      slideIndex = slides.length;
+    }
 
-		if (n < 1) {
-			slideIndex = slides.length;
-		}
+    for (var i = 0; i < slides.length; i++) {
+      slides[i].style.display = 'none';
+    }
 
-		for (let i = 0; i < slides.length; i++) {
-			slides[i].style.display = 'none';
-		}
+    for (var _i = 0; _i < dots.length; _i++) {
+      dots[_i].classList.remove('dot-active');
+    }
 
-		for (let i = 0; i < dots.length; i++) {
-			dots[i].classList.remove('dot-active');
-		}
+    slides[slideIndex - 1].style.display = 'block';
+    dots[slideIndex - 1].classList.add('dot-active');
+  }
 
-		slides[slideIndex - 1].style.display = 'block';
-		dots[slideIndex - 1].classList.add('dot-active');
-	};
+  ;
 
-	function plusSlides(n) {
-		showSlides(slideIndex += n);
-	};
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
 
-	function currentSlide(n) {
-		showSlides(slideIndex = n);	
-	};
+  ;
 
-	prev.addEventListener('click', function() {
-		plusSlides(-1);
-		for (let i = 0; i < slideItem.length; i++) {
-			slideItem[i].style.animation = 'prev 1s ease';
-		}
-	});
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
 
-	next.addEventListener('click', function() {
-		plusSlides(1);
-		for (let i = 0; i < slideItem.length; i++) {
-			slideItem[i].style.animation = 'next 1s ease';
-		}
-	});
+  ;
+  prev.addEventListener('click', function () {
+    plusSlides(-1);
 
-	dotsWrap.addEventListener('click', function(event) {
-		for (let i = 0; i < dots.length + 1; i++) {
-			if (event.target.classList.contains('dot') && event.target == dots[i-1]) {
-				currentSlide(i);
-			}
-		}
-	});
+    for (var i = 0; i < slideItem.length; i++) {
+      slideItem[i].style.animation = 'prev 1s ease';
+    }
+  });
+  next.addEventListener('click', function () {
+    plusSlides(1);
+
+    for (var i = 0; i < slideItem.length; i++) {
+      slideItem[i].style.animation = 'next 1s ease';
+    }
+  });
+  dotsWrap.addEventListener('click', function (event) {
+    for (var i = 0; i < dots.length + 1; i++) {
+      if (event.target.classList.contains('dot') && event.target == dots[i - 1]) {
+        currentSlide(i);
+      }
+    }
+  });
 }
 
 module.exports = slider;
 
 /***/ }),
 /* 284 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(203);
 
 function calculator() {
-	let persons = document.getElementsByClassName('counter-block-input')[0],
-		restDays = document.getElementsByClassName('counter-block-input')[1],
-		place = document.getElementById('select'),
-		totalValue = document.getElementById('total'),
-		personSum = 0,
-		daySum = 0,
-		total = 0;
+  var persons = document.getElementsByClassName('counter-block-input')[0],
+      restDays = document.getElementsByClassName('counter-block-input')[1],
+      place = document.getElementById('select'),
+      totalValue = document.getElementById('total'),
+      personSum = 0,
+      daySum = 0,
+      total = 0;
+  totalValue.innerHTML = 0;
 
-	totalValue.innerHTML = 0;
+  function animateNumber(total) {
+    var number = 0;
+    setInterval(function () {
+      number += 200;
 
-	function animateNumber(total) {
-	   	let number = 0;
+      if (number <= total) {
+        totalValue.innerHTML = number;
+      }
+    }, 1);
+  }
 
-	    setInterval(function() {
-	        number+=200;
-	        
-	       	if (number <= total) {
-	        	totalValue.innerHTML = number;
-	       	}
-    	}, 1);
-	};
+  ;
+  persons.addEventListener('change', function () {
+    personSum = +this.value;
+    total = (daySum + personSum) * 4000;
 
-	persons.addEventListener('change', function() {
-		personSum = +this.value;
-		total = (daySum + personSum)*4000;
-		if (restDays.value == 0 || persons.value == 0) {
-			totalValue.innerHTML = 0;
-		} else {
-			animateNumber(total);
-		}
-	});
+    if (restDays.value == 0 || persons.value == 0) {
+      totalValue.innerHTML = 0;
+    } else {
+      animateNumber(total);
+    }
+  });
+  restDays.addEventListener('change', function () {
+    daySum = +this.value;
+    total = (daySum + personSum) * 4000;
 
-	restDays.addEventListener('change', function() {
-		daySum = +this.value;
-		total = (daySum + personSum)*4000;
-		if (persons.value == 0 || restDays.value == 0) {
-			totalValue.innerHTML = 0;
-		} else {
-			animateNumber(total);
-		}
-	});
-
-	persons.addEventListener('input', function () {
-		this.value = +this.value.replace(/\D/g, '');
-	});
-
-	restDays.addEventListener('input', function () {
-		this.value = +this.value.replace(/\D/g, '');
-	});
-
-	place.addEventListener('change', function() {
-		if (restDays.value == 0 || persons.value == 0) {
-			totalValue.innerHTML = 0;
-		} else {
-			let a = total;
-			animateNumber(totalValue.innerHTML = a * this.options[this.selectedIndex].value);
-		}
-	});
+    if (persons.value == 0 || restDays.value == 0) {
+      totalValue.innerHTML = 0;
+    } else {
+      animateNumber(total);
+    }
+  });
+  persons.addEventListener('input', function () {
+    this.value = +this.value.replace(/\D/g, '');
+  });
+  restDays.addEventListener('input', function () {
+    this.value = +this.value.replace(/\D/g, '');
+  });
+  place.addEventListener('change', function () {
+    if (restDays.value == 0 || persons.value == 0) {
+      totalValue.innerHTML = 0;
+    } else {
+      var a = total;
+      animateNumber(totalValue.innerHTML = a * this.options[this.selectedIndex].value);
+    }
+  });
 }
 
 module.exports = calculator;
 
 /***/ }),
 /* 285 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function timer() {
-	let deadline = 'September 09 2018 12:00:00 GMT+03:00';
-	if ((Date.parse(deadline) - Date.parse(new Date())) >= 0) {
-	function getTimeRemaining(endtime) {
-		let t = Date.parse(endtime) - Date.parse(new Date()),
-			seconds = Math.floor((t/1000) % 60),
-			minutes = Math.floor((t/1000/60) % 60),
-			hours = Math.floor((t/(1000*60*60)));
+  var deadline = 'September 09 2018 12:00:00 GMT+03:00';
 
-			if (seconds < 10) {
- 	 		seconds = '0' + seconds;
- 			}
+  if (Date.parse(deadline) - Date.parse(new Date()) >= 0) {
+    function getTimeRemaining(endtime) {
+      var t = Date.parse(endtime) - Date.parse(new Date()),
+          seconds = Math.floor(t / 1000 % 60),
+          minutes = Math.floor(t / 1000 / 60 % 60),
+          hours = Math.floor(t / (1000 * 60 * 60));
 
- 			if (minutes < 10) {
- 	 		minutes = '0' + minutes;
- 			}
+      if (seconds < 10) {
+        seconds = '0' + seconds;
+      }
 
- 			if (hours < 10) {
- 	 			hours = '0' + hours;
- 			}
+      if (minutes < 10) {
+        minutes = '0' + minutes;
+      }
 
-		return {
-			'total' : t,
-			'hours' : hours,
-			'minutes' : minutes,
-			'seconds' : seconds
-		};
-	};
+      if (hours < 10) {
+        hours = '0' + hours;
+      }
 
-	function setClock(id, endtime) {
-		let timer = document.getElementById(id),
-			hours = timer.querySelector('.hours'),
-			minutes = timer.querySelector('.minutes'),
-			seconds = timer.querySelector('.seconds');
-			
-		function updateClock() {
-			let t = getTimeRemaining(endtime);
-			hours.innerHTML = t.hours;
-			minutes.innerHTML = t.minutes;
-			seconds.innerHTML = t.seconds;
+      return {
+        'total': t,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+      };
+    }
 
-			if (t.total <= 0) {
-				clearInterval(timeInterval);
+    ;
 
-			}
+    function setClock(id, endtime) {
+      var timer = document.getElementById(id),
+          hours = timer.querySelector('.hours'),
+          minutes = timer.querySelector('.minutes'),
+          seconds = timer.querySelector('.seconds');
 
-		};
+      function updateClock() {
+        var t = getTimeRemaining(endtime);
+        hours.innerHTML = t.hours;
+        minutes.innerHTML = t.minutes;
+        seconds.innerHTML = t.seconds;
 
-		updateClock();
-		let timeInterval = setInterval(updateClock, 1000);
-	};
+        if (t.total <= 0) {
+          clearInterval(timeInterval);
+        }
+      }
 
-	setClock('timer', deadline);
-	} else {
-		document.getElementsByClassName('hours')[0].innerHTML = '00';
-		document.getElementsByClassName('minutes')[0].innerHTML = '00';
-		document.getElementsByClassName('seconds')[0].innerHTML = '00';
-	}
+      ;
+      updateClock();
+      var timeInterval = setInterval(updateClock, 1000);
+    }
+
+    ;
+    setClock('timer', deadline);
+  } else {
+    document.getElementsByClassName('hours')[0].innerHTML = '00';
+    document.getElementsByClassName('minutes')[0].innerHTML = '00';
+    document.getElementsByClassName('seconds')[0].innerHTML = '00';
+  }
 }
 
 module.exports = timer;
