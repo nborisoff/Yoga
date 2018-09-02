@@ -1,10 +1,9 @@
 "use strict";
 
 function timer() {
-  var deadline = '2018-09-09';
+  var deadline = '2018-09-09',
 
-  if (Date.parse(deadline) - Date.parse(new Date()) >= 0) {
-    function getTimeRemaining(endtime) {
+      getTimeRemaining = function(endtime) {
       var t = Date.parse(endtime) - Date.parse(new Date()),
           seconds = Math.floor(t / 1000 % 60),
           minutes = Math.floor(t / 1000 / 60 % 60),
@@ -28,11 +27,9 @@ function timer() {
         'minutes': minutes,
         'seconds': seconds
       };
-    }
+    },
 
-    ;
-
-    function setClock(id, endtime) {
+    setClock = function(id, endtime) {
       var timer = document.getElementById(id),
           hours = timer.querySelector('.hours'),
           minutes = timer.querySelector('.minutes'),
@@ -47,14 +44,13 @@ function timer() {
         if (t.total <= 0) {
           clearInterval(timeInterval);
         }
-      }
+      };
 
-      ;
       updateClock();
       var timeInterval = setInterval(updateClock, 1000);
-    }
+    };
 
-    ;
+  if (Date.parse(deadline) - Date.parse(new Date()) >= 0) {
     setClock('timer', deadline);
   } else {
     document.getElementsByClassName('hours')[0].innerHTML = '00';

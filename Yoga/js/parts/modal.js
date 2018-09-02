@@ -14,14 +14,15 @@ function modal() {
     more.classList.remove('more-splash');
     document.body.style.overflow = '';
   });
-  var description = document.querySelectorAll('.description-btn');
+  
+  var description = document.querySelector('.info');
 
-  for (var i = 0; i < description.length; i++) {
-    description[i].addEventListener('click', function () {
+  description.addEventListener('click', function (event) {
+    if (event.target && event.target.className == 'description-btn') {
       overlay.style.display = 'block';
       document.body.style.overflow = 'hidden';
-    });
-  }
+    }
+  });
 }
 
 module.exports = modal;

@@ -7953,14 +7953,15 @@ function modal() {
     more.classList.remove('more-splash');
     document.body.style.overflow = '';
   });
-  var description = document.querySelectorAll('.description-btn');
+  
+  var description = document.querySelector('.info');
 
-  for (var i = 0; i < description.length; i++) {
-    description[i].addEventListener('click', function () {
+  description.addEventListener('click', function (event) {
+    if (event.target && event.target.className == 'description-btn') {
       overlay.style.display = 'block';
       document.body.style.overflow = 'hidden';
-    });
-  }
+    }
+  });
 }
 
 module.exports = modal;
@@ -7976,45 +7977,52 @@ __webpack_require__(203);
 
 function scroll() {
   var menu = document.querySelectorAll('[href^="#"]'),
+      navElem = document.querySelector('.container'),
       speed = 0.3;
 
   for (var i = 0; i < menu.length; i++) {
-    menu[i].addEventListener('click', function (event) {
-      event.preventDefault();
-      var currentScroll = window.pageYOffset,
-          //текущая прокрутка
-      elem = this.href.replace(/[^#]*(.*)/, '$1'),
-          //элемент, к которому переходим
-      windowCoordinates = document.querySelector(elem).getBoundingClientRect().top,
-          //координаты элемента относительно окна
-      start = null;
-
-      function scroll(time) {
-        if (start == null) {
-          start = time;
-        }
-
-        var progress = time - start,
-            y;
-
-        if (windowCoordinates < 0) {
-          y = Math.max(currentScroll - progress / speed, currentScroll + windowCoordinates);
-        } else {
-          y = Math.min(currentScroll + progress / speed, currentScroll + windowCoordinates);
-        }
-
-        window.scrollTo(0, y);
-
-        if (y != currentScroll + windowCoordinates) {
-          requestAnimationFrame(scroll);
-        } else {
-          location.elem = elem;
-        }
-      }
-
-      requestAnimationFrame(scroll);
-    });
+    menu[i].classList.add('nav-elem');
   }
+  
+    navElem.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      if (event.target && event.target.className == 'nav-elem') {
+      
+        var currentScroll = window.pageYOffset,
+            //текущая прокрутка
+        elem = event.target.href.replace(/[^#]*(.*)/, '$1'),
+            //элемент, к которому переходим
+        windowCoordinates = document.querySelector(elem).getBoundingClientRect().top,
+            //координаты элемента относительно окна
+        start = null;
+
+        function scroll(time) {
+          if (start == null) {
+            start = time;
+          }
+
+          var progress = time - start,
+              y;
+
+          if (windowCoordinates < 0) {
+            y = Math.max(currentScroll - progress / speed, currentScroll + windowCoordinates);
+          } else {
+            y = Math.min(currentScroll + progress / speed, currentScroll + windowCoordinates);
+          }
+
+          window.scrollTo(0, y);
+
+          if (y != currentScroll + windowCoordinates) {
+            requestAnimationFrame(scroll);
+          } else {
+            location.elem = elem;
+          }
+        }
+
+        requestAnimationFrame(scroll);
+      }
+    });
 }
 
 module.exports = scroll;
@@ -8248,10 +8256,9 @@ module.exports = calculator;
 
 
 function timer() {
-  var deadline = '2018-09-09';
+  var deadline = '2018-09-09',
 
-  if (Date.parse(deadline) - Date.parse(new Date()) >= 0) {
-    function getTimeRemaining(endtime) {
+      getTimeRemaining = function(endtime) {
       var t = Date.parse(endtime) - Date.parse(new Date()),
           seconds = Math.floor(t / 1000 % 60),
           minutes = Math.floor(t / 1000 / 60 % 60),
@@ -8275,11 +8282,9 @@ function timer() {
         'minutes': minutes,
         'seconds': seconds
       };
-    }
+    },
 
-    ;
-
-    function setClock(id, endtime) {
+    setClock = function(id, endtime) {
       var timer = document.getElementById(id),
           hours = timer.querySelector('.hours'),
           minutes = timer.querySelector('.minutes'),
@@ -8294,14 +8299,13 @@ function timer() {
         if (t.total <= 0) {
           clearInterval(timeInterval);
         }
-      }
+      };
 
-      ;
       updateClock();
       var timeInterval = setInterval(updateClock, 1000);
-    }
+    };
 
-    ;
+  if (Date.parse(deadline) - Date.parse(new Date()) >= 0) {
     setClock('timer', deadline);
   } else {
     document.getElementsByClassName('hours')[0].innerHTML = '00';
